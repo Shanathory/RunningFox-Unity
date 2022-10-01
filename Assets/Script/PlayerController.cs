@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
      */
     private const string STATE_ON_THE_GROUND = "isOnTheGround";
 
-    public int conteoJump;
+    private int conteoJump;
     private void Awake()
     {
         /* GetComponent busca otra componente del mismo gameObjet. En este caso, el GameObjet es nuestro player(FOX)
