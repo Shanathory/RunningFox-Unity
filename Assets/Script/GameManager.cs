@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +31,24 @@ public class GameManager : MonoBehaviour
      */
     public GameState currentGameState = GameState.menu;
 
+    /*
+     * Creamso un singleton de instancia compartida (sharedInstance) 
+     */
+    public static GameManager sharedInstance;
+
+    private void Awake()
+    {
+        /*
+         * Consultamso si la variable sharedInstan ya fue asignada por otro script,
+         * en caso de que no haya sido asiganda a otro script, lo que hacemos es asignarlo
+         * a este (this) script. De esta manera evitamos posibles  errores.
+         */
+        if(sharedInstance == null)
+        {
+            sharedInstance = this;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +64,8 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         //TODO: Hacer el sistema ded muerte
+        
+        
     }
 
     public void GameOver()

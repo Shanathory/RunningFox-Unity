@@ -152,6 +152,7 @@ public class PlayerController : MonoBehaviour
          */
         if (Physics2D.Raycast(this.transform.position, Vector2.down, distanciaDelSuelo, groundMask))
         {
+            GameManager.sharedInstance.currentGameState = GameState.inGame;
             conteoJump = 0;
             return true; 
         }
