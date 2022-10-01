@@ -9,31 +9,34 @@ public class PlayerController : MonoBehaviour
     
     /*
      * Creamos una variable de tipo flotante para
-     * poder modificar la fuerza del salto.
+     * poder modificar la fuerza del salto y otra
+     * para la velcidad de Runnig.
      */
     public float jumpForce = 4f;
-    public float runningSpeed = 2;
+    public float runningSpeed = 2; 
     /*
      * Esta variable la usamos con el RayCast para
-     * poder modificar la longit del RayCast.
+     * poder modificar la longitud del RayCast.
      */
     public float distanciaDelSuelo = 0.49f;
     
     /*
      * Creamos una variable del tipo RigidBody2D para poder modificar
      * o utilizar las fisicas del RigidBody2D. Responde a acciones
-     * relacionadas con la fisica
+     * relacionadas con la fisica.
      */
     private Rigidbody2D rigidBody;
     /*
      * La variable animator del tipo Animator funciona
-     * como la variable del tipo RigdBody2D.
+     * como la variable del tipo RigdBody2D pero para
+     * animaciones.
      */
     private Animator animator;
     /*
      * Creamos la variable groundMask del tipo LayerMask
      * para poder agregar un Layer ya creado o que hayamos 
-     * creado en unity.
+     * creado en unity. A este tipo de variables, se las
+     * conoce como variables de tipo objetos.
      */
     public LayerMask groundMask;
     /*
@@ -67,7 +70,7 @@ public class PlayerController : MonoBehaviour
      */
     private const string STATE_ON_THE_GROUND = "isOnTheGround";
 
-    private int conteoJump;
+    public int conteoJump;
     private void Awake()
     {
         /* GetComponent busca otra componente del mismo gameObjet. En este caso, el GameObjet es nuestro player(FOX)
