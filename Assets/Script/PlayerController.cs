@@ -12,13 +12,13 @@ public class PlayerController : MonoBehaviour
      * poder modificar la fuerza del salto y otra
      * para la velcidad de Runnig.
      */
-    public float jumpForce = 4f;
-    public float runningSpeed = 2; 
+    [SerializeField] private float jumpForce = 4f;
+    [SerializeField] private float runningSpeed = 2; 
     /*
      * Esta variable la usamos con el RayCast para
      * poder modificar la longitud del RayCast.
      */
-    public float distanciaDelSuelo = 0.49f;
+    [SerializeField] private float distanciaDelSuelo = 0.49f;
     
     /*
      * Creamos una variable del tipo RigidBody2D para poder modificar
@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
      * Creamos la variable sfxPlayer para poder agregar el sfx que produsca el jugador.
      */
     private AudioSource sfxPlayer;
-    public AudioClip sfxJump;
+    [SerializeField] private AudioClip sfxJump;
     
     /*
      * Por ahora nuestro personaje tiene la animación de correr en
@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour
     private const string STATE_ON_THE_GROUND = "isOnTheGround";
 
     private int conteoJump;
+    
     private void Awake()
     {
         /* GetComponent busca otra componente del mismo gameObjet. En este caso, el GameObjet es nuestro player(FOX)
@@ -104,7 +105,7 @@ public class PlayerController : MonoBehaviour
          * al character.
          * A este lo colocamos para hacer visible Phisics2D.RayCast
          */
-        Debug.DrawRay(this.transform.position, Vector2.down * distanciaDelSuelo, Color.blue);  
+        Debug.DrawRay(this.transform.position, Vector2.down * distanciaDelSuelo, Color.red);  
         /*
          * Setiamos la animacion segun lo que indique el metodo que creamos.
          */

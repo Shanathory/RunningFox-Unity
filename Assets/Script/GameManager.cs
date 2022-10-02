@@ -45,6 +45,9 @@ public class GameManager : MonoBehaviour
          */
         if(sharedInstance == null)
         {
+            /*
+             * Inicializamos nuestro singleton.
+             */
             sharedInstance = this;
         }
     }
