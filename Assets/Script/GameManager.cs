@@ -61,24 +61,29 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetButtonDown("Pausa") && currentGameState == GameState.inGame)
+        {
+            BackToMenu();
+        }
+        else if (Input.GetButtonDown("Pausa") && currentGameState == GameState.menu)
+        {
+            StartGame();
+        }
     }
 
     public void StartGame()
     {
-        //TODO: Hacer el sistema ded muerte
-        
-        
+        SetGameState(GameState.inGame);
     }
 
     public void GameOver()
     {
-        //TODO: Sistema de muerte
+        SetGameState(GameState.gameOver);
     }
 
     public void BackToMenu()
     {
-        //TODO: Hacer que se pueda accedeer a un menu
+        SetGameState(GameState.menu);
     }
     
     /*

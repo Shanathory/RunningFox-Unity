@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
      * Esta variable la usamos con el RayCast para
      * poder modificar la longitud del RayCast.
      */
-    [SerializeField] private float distanciaDelSuelo = 0.49f;
+    [SerializeField] public float distanciaDelSuelo = 0.49f;
     
     /*
      * Creamos una variable del tipo RigidBody2D para poder modificar
@@ -42,8 +42,8 @@ public class PlayerController : MonoBehaviour
     /*
      * Creamos la variable sfxPlayer para poder agregar el sfx que produsca el jugador.
      */
-    private AudioSource sfxPlayer;
-    [SerializeField] private AudioClip sfxJump;
+    //private AudioSource sfxPlayer;
+    //[SerializeField] private AudioClip sfxJump;
     
     /*
      * Por ahora nuestro personaje tiene la animación de correr en
@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
          */
         rigidBody = GetComponent<Rigidbody2D>(); 
         animator = GetComponent<Animator>();
-        sfxPlayer = GetComponent<AudioSource>();
+        //sfxPlayer = GetComponent<AudioSource>();
     }
     
     // Start is called before the first frame update
@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
          * al character.
          * A este lo colocamos para hacer visible Phisics2D.RayCast
          */
-        Debug.DrawRay(this.transform.position, Vector2.down * distanciaDelSuelo, Color.red);  
+        Debug.DrawRay(this.transform.position, Vector2.down * distanciaDelSuelo, Color.blue);  
         /*
          * Setiamos la animacion segun lo que indique el metodo que creamos.
          */
@@ -114,21 +114,31 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (rigidBody.velocity.x < runningSpeed)
+        if (GameManager.sharedInstance.currentGameState == GameState.inGame)
         {
-            rigidBody.velocity = new Vector2(runningSpeed, rigidBody.velocity.y);
-        }
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.W))
-        {
-            if (conteoJump == 0)
+            if (rigidBody.velocity.x < runningSpeed)
             {
-                /*
-                 * Agregamos el sonido del salto del jugador. 1.0f indica que va a sonoar al 100% del volumen.
-                 */
-                sfxPlayer.PlayOneShot(sfxJump, 1.0f);
-                Jump();
-                conteoJump = 1;
+                rigidBody.velocity = new Vector2(runningSpeed, rigidBody.velocity.y);
             }
+
+            if (Input.GetButtonDown("Jump"))
+            {
+                if (conteoJump == 0)
+                {
+                    conteoJump = 1;
+                    Jump();
+                    /*
+                     * Agregamos el sonido del salto del jugador. 1.0f indica que va a sonoar al 100% del volumen.
+                     */
+                    //sfxPlayer.PlayOneShot(sfxJump, 1.0f);
+
+                }
+            }
+        }
+        else
+        {
+           // rigidBody.velocity = new Vector2(0, 0);
+           rigidBody.Sleep();
         }
     }
     
@@ -153,7 +163,6 @@ public class PlayerController : MonoBehaviour
          */
         if (Physics2D.Raycast(this.transform.position, Vector2.down, distanciaDelSuelo, groundMask))
         {
-            GameManager.sharedInstance.currentGameState = GameState.inGame;
             conteoJump = 0;
             return true; 
         }
