@@ -35,7 +35,13 @@ public class GameManager : MonoBehaviour
      * Creamso un singleton de instancia compartida (sharedInstance) 
      */
     public static GameManager sharedInstance;
-
+    
+    /*
+     * Instanciamos controller de PlayerController para poder manegar el estado de StartGame.
+     * Esta variable referencia al player controller.
+     */
+    private PlayerController controller;
+    
     private void Awake()
     {
         /*
@@ -55,7 +61,12 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        /*
+         * Inicializamos el controller y le recuperamos el componente de PlayerControler.
+         * El GameObjet.Find, lo utilizamos para localizar GameObjet  partir de un tag
+         * Con el GetComponent recuperamos la componente <PlayerController>.
+         */
+        controller = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -65,7 +76,7 @@ public class GameManager : MonoBehaviour
         {
             BackToMenu();
         }
-        else if (Input.GetButtonDown("Pausa") && currentGameState == GameState.menu)
+        else if (Input.GetKeyDown(KeyCode.S) && currentGameState == GameState.menu)
         {
             StartGame();
         }
@@ -74,6 +85,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         SetGameState(GameState.inGame);
+        
     }
 
     public void GameOver()
@@ -102,6 +114,7 @@ public class GameManager : MonoBehaviour
         else if (newGameState == GameState.inGame)
         {
             //TODO: Iniciar el juego.
+            controller.StartGame();   // Ejecutamos la funcion StartGame del Script/clase PlayerController.
         }
         else if (newGameState == GameState.gameOver)
         {

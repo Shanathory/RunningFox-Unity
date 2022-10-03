@@ -72,7 +72,8 @@ public class PlayerController : MonoBehaviour
      * Esto es asi, porque son variables constantes.
      */
     private const string STATE_ON_THE_GROUND = "isOnTheGround";
-    
+
+    private Vector3 StartPosition; // Se utiliza para guardar la posicin inicial de cuando se da play.
     
     private void Awake()
     {
@@ -94,6 +95,21 @@ public class PlayerController : MonoBehaviour
          */
         animator.SetBool(STATE_ALIVE, true);
         animator.SetBool(STATE_ON_THE_GROUND, true);
+
+        /*
+         * Almacenamso la posicion en la que espawnea el personaje apenas inicia el juego. Esta la utilizaremos para
+         * cuando queramos volver a jugar luego de haber muerto.
+         */
+        StartPosition = this.transform.position;
+    }
+
+    public void StartGame()
+    {
+        /*
+         * Hacemos que el player spawne en el punto de inicio, el punto de cuando le dimos play al juego. 
+         */
+        this.transform.position = StartPosition;
+        this.rigidBody.velocity = Vector2.zero; //Frenamos la velosidad del Player.
     }
 
     private void Update()
