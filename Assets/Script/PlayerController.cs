@@ -12,13 +12,17 @@ public class PlayerController : MonoBehaviour
      * poder modificar la fuerza del salto y otra
      * para la velcidad de Runnig.
      */
-    [SerializeField] private float jumpForce = 4f;
-    [SerializeField] private float runningSpeed = 2; 
+    [SerializeField] private float jumpForce;
+    
+    private int jumpDie; //Salto cuando se muere
+
+    [SerializeField] private float runningSpeed;
+    
     /*
      * Esta variable la usamos con el RayCast para
      * poder modificar la longitud del RayCast.
      */
-    [SerializeField] public float distanciaDelSuelo = 0.49f;
+    [SerializeField] private float distanciaDelSuelo;
     
     /*
      * Creamos una variable del tipo RigidBody2D para poder modificar
@@ -26,12 +30,14 @@ public class PlayerController : MonoBehaviour
      * relacionadas con la fisica.
      */
     private Rigidbody2D rigidBody;
+    
     /*
      * La variable animator del tipo Animator funciona
      * como la variable del tipo RigdBody2D pero para
      * animaciones.
      */
     private Animator animator;
+    
     /*
      * Creamos la variable groundMask del tipo LayerMask
      * para poder agregar un Layer ya creado o que hayamos 
@@ -39,11 +45,7 @@ public class PlayerController : MonoBehaviour
      * conoce como variables de tipo objetos.
      */
     public LayerMask groundMask;
-    /*
-     * Creamos la variable sfxPlayer para poder agregar el sfx que produsca el jugador.
-     */
-    //private AudioSource sfxPlayer;
-    //[SerializeField] private AudioClip sfxJump;
+
     
     /*
      * Por ahora nuestro personaje tiene la animación de correr en
@@ -63,14 +65,14 @@ public class PlayerController : MonoBehaviour
      * constante.
      */
     private const string STATE_ALIVE = "isAlive"; 
+    
     /*
      * Estas variables siempre van a baler (en este caso)
      * isOnTheGround que lo que configuramos en el animator.
      * Esto es asi, porque son variables constantes.
      */
     private const string STATE_ON_THE_GROUND = "isOnTheGround";
-
-    private int conteoJump;
+    
     
     private void Awake()
     {
@@ -80,7 +82,6 @@ public class PlayerController : MonoBehaviour
          */
         rigidBody = GetComponent<Rigidbody2D>(); 
         animator = GetComponent<Animator>();
-        //sfxPlayer = GetComponent<AudioSource>();
     }
     
     // Start is called before the first frame update
@@ -93,7 +94,6 @@ public class PlayerController : MonoBehaviour
          */
         animator.SetBool(STATE_ALIVE, true);
         animator.SetBool(STATE_ON_THE_GROUND, true);
-        conteoJump = 0;
     }
 
     private void Update()
@@ -106,6 +106,7 @@ public class PlayerController : MonoBehaviour
          * A este lo colocamos para hacer visible Phisics2D.RayCast
          */
         Debug.DrawRay(this.transform.position, Vector2.down * distanciaDelSuelo, Color.blue);  
+        
         /*
          * Setiamos la animacion segun lo que indique el metodo que creamos.
          */
@@ -116,26 +117,16 @@ public class PlayerController : MonoBehaviour
     {
         if (GameManager.sharedInstance.currentGameState == GameState.inGame)
         {
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                Jump(); 
+            }
             if (rigidBody.velocity.x < runningSpeed)
             {
-                rigidBody.velocity = new Vector2(runningSpeed, rigidBody.velocity.y);
-            }
-
-            if (Input.GetButtonDown("Jump"))
-            {
-                if (conteoJump == 0)
-                {
-                    conteoJump = 1;
-                    Jump();
-                    /*
-                     * Agregamos el sonido del salto del jugador. 1.0f indica que va a sonoar al 100% del volumen.
-                     */
-                    //sfxPlayer.PlayOneShot(sfxJump, 1.0f);
-
-                }
+                rigidBody.velocity = new Vector2(runningSpeed, rigidBody.velocity.y); //Seteo de la velocidad para que aumente hasat la velocidad runigSpeed.
             }
         }
-        else
+        if (GameManager.sharedInstance.currentGameState == GameState.menu)
         {
            // rigidBody.velocity = new Vector2(0, 0);
            rigidBody.Sleep();
@@ -163,12 +154,23 @@ public class PlayerController : MonoBehaviour
          */
         if (Physics2D.Raycast(this.transform.position, Vector2.down, distanciaDelSuelo, groundMask))
         {
-            conteoJump = 0;
             return true; 
         }
         else
         {
-            return false;
+             return false;
+        }
+    }
+
+    public void Die()
+    {
+        this.animator.SetBool(STATE_ALIVE, false); // cambia el estado bool de isAlive a false
+        GameManager.sharedInstance.GameOver(); // le indica al GameManager que tiene que entrar en estado GameOver
+        rigidBody.velocity = new Vector2(0, rigidBody.velocity.y); // Desaselera lateralmente (en el eje de las x)
+        if (jumpDie == 0) // Verifica si ya habia dado el salto
+        {
+            jumpDie = 1;
+            rigidBody.AddForce(Vector2.up * 10, ForceMode2D.Impulse); // Realiz el salto.
         }
     }
 }
