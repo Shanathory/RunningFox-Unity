@@ -112,6 +112,7 @@ public class PlayerController : MonoBehaviour
         this.rigidBody.velocity = Vector2.zero; //Frenamos la velosidad del Player.
     }
 
+
     private void Update()
     {
         /*
@@ -130,7 +131,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {
+    { 
         if (GameManager.sharedInstance.currentGameState == GameState.inGame)
         {
             if (Input.GetKeyDown(KeyCode.W))
@@ -144,9 +145,14 @@ public class PlayerController : MonoBehaviour
         }
         if (GameManager.sharedInstance.currentGameState == GameState.menu)
         {
-           // rigidBody.velocity = new Vector2(0, 0);
-           rigidBody.Sleep();
+            InMenu();
         }
+    }
+    
+    private void InMenu()
+    {
+        rigidBody.velocity = new Vector2(0, 0);
+        rigidBody.Sleep();
     }
     
     /*

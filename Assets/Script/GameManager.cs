@@ -63,29 +63,34 @@ public class GameManager : MonoBehaviour
     {
         /*
          * Inicializamos el controller y le recuperamos el componente de PlayerControler.
-         * El GameObjet.Find, lo utilizamos para localizar GameObjet  partir de un tag
+         * El GameObjet.Find, lo utilizamos para localizar GameObjet  partir de su nombre
+         * (tambien se pude buscar por su tag)
          * Con el GetComponent recuperamos la componente <PlayerController>.
          */
-        controller = GameObject.Find("Player").GetComponent<PlayerController>();
+        controller = GameObject.Find("player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Pausa") && currentGameState == GameState.inGame)
-        {
-            BackToMenu();
-        }
-        else if (Input.GetKeyDown(KeyCode.S) && currentGameState == GameState.menu)
+        if (Input.GetKeyDown(KeyCode.R) && currentGameState == GameState.gameOver)
         {
             StartGame();
         }
+        if (Input.GetKeyDown(KeyCode.P) && currentGameState == GameState.inGame)
+        {
+            BackToMenu();
+        }
+        else if (Input.GetKeyDown(KeyCode.P) && currentGameState == GameState.menu)
+        {
+            StartGame();
+        }
+
     }
 
     public void StartGame()
     {
         SetGameState(GameState.inGame);
-        
     }
 
     public void GameOver()
