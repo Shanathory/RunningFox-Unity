@@ -89,14 +89,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         /*
-         * Le Pedimos al animator que configure nuestra variable
-         * booleana STATE_ALIVE como verdadera al iniciar el juego.
-         * Lo mismo sucede con STATE_ON_THE_GROUND.
-         */
-        animator.SetBool(STATE_ALIVE, true);
-        animator.SetBool(STATE_ON_THE_GROUND, true);
-
-        /*
          * Almacenamso la posicion en la que espawnea el personaje apenas inicia el juego. Esta la utilizaremos para
          * cuando queramos volver a jugar luego de haber muerto.
          */
@@ -104,6 +96,19 @@ public class PlayerController : MonoBehaviour
     }
 
     public void StartGame()
+    {
+        /*
+         * Le Pedimos al animator que configure nuestra variable
+         * booleana STATE_ALIVE como verdadera al iniciar el juego.
+         * Lo mismo sucede con STATE_ON_THE_GROUND.
+         */
+        animator.SetBool(STATE_ALIVE, true);
+        animator.SetBool(STATE_ON_THE_GROUND, true);
+        
+        Invoke("RestartPosition", 0.2f); //Retrasa la aparicion de del personaje.
+    }
+
+    private void RestartPosition()
     {
         /*
          * Hacemos que el player spawne en el punto de inicio, el punto de cuando le dimos play al juego. 

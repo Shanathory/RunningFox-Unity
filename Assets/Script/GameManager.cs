@@ -73,19 +73,10 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) && currentGameState == GameState.gameOver)
+        if (Input.GetKeyDown(KeyCode.P) && currentGameState != GameState.inGame)
         {
             StartGame();
         }
-        if (Input.GetKeyDown(KeyCode.P) && currentGameState == GameState.inGame)
-        {
-            BackToMenu();
-        }
-        else if (Input.GetKeyDown(KeyCode.P) && currentGameState == GameState.menu)
-        {
-            StartGame();
-        }
-
     }
 
     public void StartGame()
